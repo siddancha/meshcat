@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>MeshCat - setting opacity</title>
+</head>
+
+<body>
+    <div id="meshcat-pane">
+    </div>
+
+    <script src="../dist/main.min.js"></script>
+    <script>
+        var viewer = new MeshCat.Viewer(document.getElementById("meshcat-pane"));
+
+        viewer.handle_command({
+            type: "set_object",
+            path: "/meshcat/sphere",
+            object: {
+                metadata: { version: 4.5, type: "Sphere" },
+                geometries: [
+                    {
+                        uuid: "00c2baef-9600-4c6b-b88d-7e82c40e003f",
+                        type: "SphereGeometry",
+                        center: [0, 0, 0],
+                        radius: 1,
+                    },
+                    {
+                        uuid: "10c2baef-9600-4c6b-b88d-7e82c40e003f",
+                        type: "BufferGeometry",
+                        data: {
+                            attributes: {
+                                position: {
+                                    itemSize: 3,
+                                    type: "Float32Array",
+                                    array: [
+                                        0, 0, 0,   // vertex 1
+                                        1, 0, 0,   // vertex 2
+                                        0, 1, 0,   // vertex 3
+                                        1, 1, 1    // vertex 4
+                                    ]
+                                },
+                            },
+                        }
+                    }
+                ],
+                materials: [
+                    {
+                        uuid: "20c2baef-9600-4c6b-b88d-7e82c40e003f",
+                        type: "LineBasicMaterial",
+                        color: 0xff0000,  // Red color
+                        linewidth: 5
+                    }
+                ],
+                object: {
+                    uuid: "00c2baef-9600-4c6b-b88d-7e82c40e003f",
+                    type: "Line",
+                    geometry: "10c2baef-9600-4c6b-b88d-7e82c40e003f",
+                    material: "20c2baef-9600-4c6b-b88d-7e82c40e003f"
+                }
+            }
+        });
+
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #meshcat-pane {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #test-message {
+            width: 75vw;
+            text-align: left;
+            background-color: rgb(232, 232, 232);
+            position: fixed;
+            left: 0%;
+            display: block;
+            padding: 10px;
+        }
+
+        #status-message {
+            font-size: large;
+            font-weight: bold;
+        }
+    </style>
+</body>
+
+</html>

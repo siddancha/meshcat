@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>MeshCat - setting opacity</title>
+</head>
+
+<body>
+    <div id="meshcat-pane">
+    </div>
+
+    <script src="../dist/main.min.js"></script>
+    <script>
+        var viewer = new MeshCat.Viewer(document.getElementById("meshcat-pane"));
+
+        viewer.handle_command({
+            type: "set_object",
+            path: "/meshcat/instanced_cubes",
+            object: {
+                metadata: { version: 4.5, type: "Object" },
+                geometries: [
+                    {
+                        uuid: "cube-geom-uuid",
+                        type: "BoxGeometry",
+                        width: 0.2,
+                        height: 0.2,
+                        depth: 0.2
+                    }
+                ],
+                materials: [
+                    {
+                        uuid: "cube-mat-uuid", 
+                        type: "MeshPhongMaterial",
+                        color: 0xff0000,
+                        side: 2,
+                        transparent: true,
+                        opacity: 0.5
+                    }
+                ],
+                object: {
+                    uuid: "instanced-mesh-uuid",
+                    type: "InstancedMesh",
+                    geometry: "cube-geom-uuid",
+                    material: "cube-mat-uuid",
+                    instanceMatrix: {
+                        type: "Float32Array",
+                        array: [
+                            // Each line is a 4x4 matrix of a cube
+                            // The 4x4 matrices are unrolled in column-major order
+
+                            // z = 0 layer
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0.3,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0.3,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.3,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0.6,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0.6,0,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.6,0,1,
+                            // z = 0.3 layer
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0.3,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0.3,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.3,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0.6,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0.6,0.3,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.6,0.3,1,
+                            // z = 0.6 layer
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0.3,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0.3,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.3,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0.6,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.3,0.6,0.6,1,
+                            1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.6,0.6,1
+                        ]
+                    },
+                    count: 27
+                }
+            }
+        });
+
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #meshcat-pane {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #test-message {
+            width: 75vw;
+            text-align: left;
+            background-color: rgb(232, 232, 232);
+            position: fixed;
+            left: 0%;
+            display: block;
+            padding: 10px;
+        }
+
+        #status-message {
+            font-size: large;
+            font-weight: bold;
+        }
+    </style>
+</body>
+
+</html>
