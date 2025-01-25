@@ -32,7 +32,7 @@
                     {
                         uuid: "cube-mat-uuid", 
                         type: "MeshPhongMaterial",
-                        color: 0xff0000,
+                        // color: 0xff0000,
                         side: 2,
                         transparent: true,
                         opacity: 0.5
@@ -81,9 +81,52 @@
                             1,0,0,0, 0,1,0,0, 0,0,1,0, 0.6,0.6,0.6,1
                         ]
                     },
+                    instanceColor: {
+                        type: "Float32Array",
+                        itemSize: 3,
+                        array: new Float32Array(27 * 3).fill(0)  // 27 instances * 3 components (RGB)
+                    },
                     count: 27
                 }
             }
+        });
+
+        viewer.handle_command({
+            type: "set_property",
+            path: "/meshcat/instanced_cubes/<object>",
+            property: "instanceColor.array",
+            value: new Float32Array([
+                    // z = 0 layer (red)
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    1,0,0,
+                    // z = 0.3 layer (green)
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    0,1,0,
+                    // z = 0.6 layer (blue)
+                    0,0,1,
+                    0,0,1,
+                    0,0,1,
+                    0,0,1,
+                    0,0,1,
+                    0,0,1,
+                    0,0,1,
+                    0,0,1,
+                    0,0,1
+            ])
         });
 
     </script>
