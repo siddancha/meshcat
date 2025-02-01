@@ -44,7 +44,7 @@
                     geometry: "cube-geom-uuid",
                     material: "cube-mat-uuid",
                     instanceMatrix: {
-                        type: "Float32Array",
+                        type: "InstancedBufferAttribute",
                         array: [
                             // Each line is a 4x4 matrix of a cube
                             // The 4x4 matrices are unrolled in column-major order
@@ -82,7 +82,7 @@
                         ]
                     },
                     instanceColor: {
-                        type: "Float32Array",
+                        type: "InstancedBufferAttribute",
                         itemSize: 3,
                         array: new Float32Array(27 * 3).fill(0)  // 27 instances * 3 components (RGB)
                     },
