@@ -1,3 +1,15 @@
+"""
+DEPRECATION NOTICE
+
+meshcat-python is essentially deprecated. The last release was in
+November 2021! https://pypi.org/project/meshcat/#history
+
+It ships with a very old distribution of meshcat. For example, that
+distribution of meshcat does not contain "set_property_chain()" that implements
+chained properties separated by full-stops. Therefore, I was unable to
+reproduce the behavior of instanced_mesh_voxel_grid.html using meshcat-python.
+"""
+
 from typing import List
 import meshcat
 import meshcat.geometry as g
