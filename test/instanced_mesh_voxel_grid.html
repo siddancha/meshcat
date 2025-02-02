@@ -14,6 +14,8 @@
     <script>
         var viewer = new MeshCat.Viewer(document.getElementById("meshcat-pane"));
 
+        // set_object keys are *constructor arguments* for the object.
+        // They often include properties as parameters.
         viewer.handle_command({
             type: "set_object",
             path: "/meshcat/instanced_cubes",
@@ -91,6 +93,8 @@
             }
         });
 
+        // set_property keys are *properties* of the object.
+        // They are not constructor arguments.
         viewer.handle_command({
             type: "set_property",
             path: "/meshcat/instanced_cubes/<object>",
@@ -128,6 +132,25 @@
                     0,0,1
             ])
         });
+
+        // viewer.handle_command({
+        //     type: "set_property",
+        //     path: "/meshcat/instanced_cubes/<object>",
+        //     property: "material.opacity",
+        //     value: 1.0,
+        // });
+
+        // viewer.handle_command({
+        //     type: "set_property",
+        //     path: "/meshcat/instanced_cubes/<object>",
+        //     property: "material.color",
+        //     value: {
+        //         type: "Color",
+        //         r: 0,
+        //         g: 1,
+        //         b: 0
+        //     },
+        // });
 
     </script>
 
