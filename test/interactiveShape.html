@@ -94,12 +94,11 @@ var curveMaterial = new THREE.LineBasicMaterial({color: "white"});
 var curveLine = new THREE.Line(createCurveGeometry(), curveMaterial);
 scene.add(curveLine);
 
-var shapeGeometry;
 var shapeMaterial = [
   new THREE.MeshLambertMaterial({color:0xb5b5b5}),
   new THREE.MeshLambertMaterial({color:"aqua"})
 ]
-var shapeMesh = new THREE.Mesh(shapeGeometry, shapeMaterial);
+var shapeMesh = new THREE.Mesh(undefined, shapeMaterial);
 scene.add(shapeMesh);
 
 function extrudeMesh(){
@@ -117,7 +116,7 @@ function extrudeMesh(){
   
   const shape = new THREE.Shape(points);
   const extrudeSettings = { amount: 1, bevelEnabled: false};
-  shapeGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+  const shapeGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
   // shapeGeometry.rotateZ(Math.PI * .5);
   // shapeGeometry.translate(0, 0, 1);
 
