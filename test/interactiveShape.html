@@ -20,7 +20,7 @@
 var viewer = new MeshCat.Viewer(document.getElementById("meshcat-pane"));
 
 const THREE = MeshCat.THREE;
-const controls = viewer.controls;
+const orbitControls = viewer.controls;
 const scene = viewer.scene;
 const camera = viewer.camera;
 const renderer = viewer.renderer;
@@ -120,7 +120,7 @@ function extrudeMesh(){
   // shapeGeometry.rotateZ(Math.PI * .5);
   // shapeGeometry.translate(0, 0, 1);
 
-
+  // Update the shape mesh
   shapeMesh.geometry.dispose();
   shapeMesh.geometry = shapeGeometry;
 }
@@ -141,7 +141,7 @@ var shift = new THREE.Vector3();
 function onMouseDown(event){
   intersects = raycaster.intersectObjects(controlPoints);
 	if (intersects.length > 0){
-  	controls.enableRotate = false;
+  	orbitControls.enableRotate = false;
     dragObject = intersects[0].object;
     plane.setFromNormalAndCoplanarPoint(planeNormal, intersects[0].point);
     shift.subVectors(dragObject.position, intersects[0].point);
@@ -150,7 +150,7 @@ function onMouseDown(event){
 }
 
 function onMouseUp(event){
-  controls.enableRotate = true;
+  orbitControls.enableRotate = true;
   dragObject = null;
   dragging = false;
 }
