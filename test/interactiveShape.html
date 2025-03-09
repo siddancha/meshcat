@@ -66,10 +66,7 @@ function createPoint(position, color){
 }
 
 function createCurveGeometry(){
-  var pts = [];
-  controlPoints.forEach(pt => {
-    pts.push(pt.position);
-  });
+  const pts = controlPoints.map(pt => pt.position);
   var curve = new THREE.CatmullRomCurve3( pts );
   curve.closed = true;
   
@@ -97,9 +94,6 @@ var curveMaterial = new THREE.LineBasicMaterial({color: "white"});
 var curveLine = new THREE.Line(createCurveGeometry(), curveMaterial);
 scene.add(curveLine);
 
-var extrudeSettings = { amount: 1, bevelEnabled: false};
-var points = [];
-var shape = null;
 var shapeGeometry;
 var shapeMaterial = [
   new THREE.MeshLambertMaterial({color:0xb5b5b5}),
@@ -108,29 +102,21 @@ var shapeMaterial = [
 var shapeMesh = new THREE.Mesh(shapeGeometry, shapeMaterial);
 scene.add(shapeMesh);
 
-// Initialize points array
-const positions = curveLine.geometry.attributes.position;
-const count = positions.count;
-for (let i = 0; i < count; i++) {
-  const x = positions.getX(i);
-  const y = positions.getY(i);
-  points.push(new THREE.Vector2(x, y));
-}
-
 function extrudeMesh(){
   // Get the curve points from the buffer geometry
   const positions = curveLine.geometry.attributes.position;
   const count = positions.count;
   
   // Clear the points array and refill it
-  points.length = 0;
+  const points = [];
   for (let i = 0; i < count; i++) {
     const x = positions.getX(i);
     const y = positions.getY(i);
     points.push(new THREE.Vector2(x, y));
   }
   
-  shape = new THREE.Shape(points);
+  const shape = new THREE.Shape(points);
+  const extrudeSettings = { amount: 1, bevelEnabled: false};
   shapeGeometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
   // shapeGeometry.rotateZ(Math.PI * .5);
   // shapeGeometry.translate(0, 0, 1);
