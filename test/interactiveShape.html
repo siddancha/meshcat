@@ -139,6 +139,7 @@ var planeNormal = new THREE.Vector3(0, 0, 1);
 var shift = new THREE.Vector3();
 
 function onMouseDown(event){
+  raycaster.setFromCamera(mouse, camera);
   intersects = raycaster.intersectObjects(controlPoints);
 	if (intersects.length > 0){
   	orbitControls.enableRotate = false;
@@ -160,6 +161,7 @@ function onMouseMove(event){
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
   if (intersects == null || intersects.length == 0 || !dragging) return;
   const pointOfIntersection = new THREE.Vector3();
+  raycaster.setFromCamera(mouse, camera);
   raycaster.ray.intersectPlane(plane, pointOfIntersection);
   dragObject.position.copy(pointOfIntersection).add(shift);
   curveLine.geometry.dispose();
@@ -167,17 +169,9 @@ function onMouseMove(event){
   extrudeMesh();
 }
 
-var time = 0;
-var curShift = 0;
 render();
 function render(){
-  time = Date.now() * 0.001;
   requestAnimationFrame(render);
-  raycaster.setFromCamera(mouse, camera);
-  controlPoints.forEach((cp, idx) => {
-    curShift = (Math.PI / 2) * idx;
-    cp.material.opacity = 0.6 + Math.sin(time - curShift) * .2;
-  });
   renderer.render(scene, camera);
 }
 </script>
