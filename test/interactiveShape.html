@@ -140,7 +140,7 @@ function onMouseUp(event){
 function onMouseMove(event){
   mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
   mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-  if (intersects == null || intersects.length == 0 || !dragging) return;
+  if (intersects.length == 0 || !dragging) return;
   raycaster.ray.intersectPlane(plane, pointOfIntersection);
   dragObject.position.copy(pointOfIntersection).add(shift);
   curveLine.geometry.dispose();
