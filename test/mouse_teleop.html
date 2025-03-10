@@ -63,7 +63,10 @@ class DragControls extends THREE.Controls {
         this.mouseButtons = {
             LEFT: THREE.MOUSE.PAN,
             MIDDLE: THREE.MOUSE.PAN,
-            RIGHT: THREE.MOUSE.ROTATE,
+
+			// Commenting the next line to remove the functionality to rotate
+			// the object.
+            // RIGHT: THREE.MOUSE.ROTATE,
         };
 		this.touches = { ONE: THREE.TOUCH.PAN };
 
