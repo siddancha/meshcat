@@ -164,15 +164,15 @@ class DragControls extends THREE.Controls {
 
 		switch ( action ) {
 
-			case MOUSE.PAN:
-			case TOUCH.PAN:
+			case THREE.MOUSE.PAN:
+			case THREE.TOUCH.PAN:
 
 				this.state = STATE.PAN;
 
 				break;
 
-			case MOUSE.ROTATE:
-			case TOUCH.ROTATE:
+			case THREE.MOUSE.ROTATE:
+			case THREE.TOUCH.ROTATE:
 
 				this.state = STATE.ROTATE;
 
@@ -423,7 +423,25 @@ function findGroup( obj, group = null ) {
 
 }
 
-    </script>
+// Create a cylinder and apply DragControls
+const cylinder_length = 0.5;
+const cylinder_radius = 0.2;
+const geometry = new THREE.CylinderGeometry(
+	cylinder_radius, cylinder_radius, cylinder_length, 32,
+);
+const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+const cylinder = new THREE.Mesh(geometry, material);
+cylinder.position.set(0, 0, cylinder_length / 2);
+// Rotate the cylinder to be upright along the z-axis
+cylinder.rotation.x = Math.PI / 2;
+scene.add(cylinder);
+
+
+// Initialize DragControls
+const objects = [cylinder];
+const dragControls = new DragControls(objects, camera, renderer.domElement);
+
+</script>
 
     <style>
         body {
