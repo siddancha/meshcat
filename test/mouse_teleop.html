@@ -452,18 +452,20 @@ const dragControls = new DragControls(
 	dragPlaneNormal,
 	renderer.domElement,
 );
-dragControls.addEventListener('drag', () => renderer.render(scene, camera));
+dragControls.addEventListener('drag', (event) => {
+	renderer.render(scene, camera);
+});
 
 // Add hover event listeners for visual feedback
 dragControls.addEventListener('hoveron', (event) => {
 	// Set emissive color to create a subtle glow effect when hovering
-	event.object.material.emissive.setHex(0x888888);
+	event.object.material.emissive.setScalar(0.2);
 	renderer.render(scene, camera);
 });
 
 dragControls.addEventListener('hoveroff', (event) => {
 	// Reset emissive color when not hovering
-	event.object.material.emissive.setHex(0x000000);
+	event.object.material.emissive.setScalar(0.0);
 	renderer.render(scene, camera);
 });
 
