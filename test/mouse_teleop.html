@@ -434,7 +434,7 @@ const cylinder_radius = 0.2;
 const geometry = new THREE.CylinderGeometry(
 	cylinder_radius, cylinder_radius, cylinder_length, 32,
 );
-const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 const cylinder = new THREE.Mesh(geometry, material);
 cylinder.position.set(0, 0, cylinder_length / 2);
 // Rotate the cylinder to be upright along the z-axis
@@ -453,6 +453,32 @@ const dragControls = new DragControls(
 	renderer.domElement,
 );
 dragControls.addEventListener('drag', () => renderer.render(scene, camera));
+
+// Add hover event listeners for visual feedback
+dragControls.addEventListener('hoveron', (event) => {
+	// Set emissive color to create a subtle glow effect when hovering
+	event.object.material.emissive.setHex(0x888888);
+	renderer.render(scene, camera);
+});
+
+dragControls.addEventListener('hoveroff', (event) => {
+	// Reset emissive color when not hovering
+	event.object.material.emissive.setHex(0x000000);
+	renderer.render(scene, camera);
+});
+
+// Add drag event listeners for enhanced visual feedback
+// dragControls.addEventListener('dragstart', (event) => {
+// 	// Set emissive color to full intensity when dragging
+// 	event.object.material.emissive.setHex(0xaaaaaa);
+// 	renderer.render(scene, camera);
+// });
+
+// dragControls.addEventListener('dragend', (event) => {
+// 	// Return to hover intensity if still hovering
+// 	event.object.material.emissive.setHex(0x555555);
+// 	renderer.render(scene, camera);
+// });
 
 </script>
 
