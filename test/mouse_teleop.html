@@ -45,11 +45,12 @@ const STATE = {
 
 class DragControls extends THREE.Controls {
 
-	constructor( objects, camera, orbitControls = null, dragPlaneNormal = null, domElement = null ) {
+	constructor( object, camera, orbitControls = null, dragPlaneNormal = null, domElement = null ) {
 
 		super( camera, domElement );
 
-		this.objects = objects;
+		this.object = object;
+		this.camera = camera;
 
 		this.orbitControls = orbitControls;
 		this.recursive = true;
@@ -209,7 +210,7 @@ class DragControls extends THREE.Controls {
 
 function onPointerMove( event ) {
 
-	const camera = this.object;
+	const camera = this.camera;
 	const domElement = this.domElement;
 	const raycaster = this.raycaster;
 
@@ -250,7 +251,7 @@ function onPointerMove( event ) {
 			_intersections.length = 0;
 
 			raycaster.setFromCamera( _pointer, camera );
-			raycaster.intersectObjects( this.objects, this.recursive, _intersections );
+			raycaster.intersectObject( this.object, this.recursive, _intersections );
 
 			if ( _intersections.length > 0 ) {
 
@@ -310,7 +311,7 @@ function onPointerMove( event ) {
 
 function onPointerDown( event ) {
 
-	const camera = this.object;
+	const camera = this.camera;
 	const domElement = this.domElement;
 	const raycaster = this.raycaster;
 	const orbitControls = this.orbitControls;
@@ -323,7 +324,7 @@ function onPointerDown( event ) {
 	_intersections.length = 0;
 
 	raycaster.setFromCamera( _pointer, camera );
-	raycaster.intersectObjects( this.objects, this.recursive, _intersections );
+	raycaster.intersectObject( this.object, this.recursive, _intersections );
 
 	if ( _intersections.length > 0 ) {
 
@@ -443,10 +444,9 @@ scene.add(cylinder);
 // Define a custom drag plane normal (in this case, restricting movement to the XY plane)
 const dragPlaneNormal = new THREE.Vector3(0, 0, 1);
 
-// Initialize DragControls with the custom normal
-const objects = [cylinder];
+// Initialize DragControls.
 const dragControls = new DragControls(
-	objects,
+	cylinder,
 	camera,
 	orbitControls,
 	dragPlaneNormal,
