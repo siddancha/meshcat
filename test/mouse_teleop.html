@@ -45,12 +45,13 @@ const STATE = {
 
 class DragControls extends THREE.Controls {
 
-	constructor( objects, camera, domElement = null ) {
+	constructor( objects, camera, orbitControls = null, domElement = null ) {
 
 		super( camera, domElement );
 
 		this.objects = objects;
 
+		this.orbitControls = orbitControls;
 		this.recursive = true;
 		this.transformGroup = false;
 		this.rotateSpeed = 1;
@@ -333,6 +334,7 @@ function onPointerDown( event ) {
 	const camera = this.object;
 	const domElement = this.domElement;
 	const raycaster = this.raycaster;
+	const orbitControls = this.orbitControls;
 
 	if ( this.enabled === false ) return;
 
@@ -379,6 +381,11 @@ function onPointerDown( event ) {
 
 		domElement.style.cursor = 'move';
 
+		// Disable orbit controls when dragging starts
+		if (orbitControls) {
+			orbitControls.enabled = false;
+		}
+
 		this.dispatchEvent( { type: 'dragstart', object: _selected } );
 
 	}
@@ -388,6 +395,8 @@ function onPointerDown( event ) {
 }
 
 function onPointerCancel() {
+
+	const orbitControls = this.orbitControls;
 
 	if ( this.enabled === false ) return;
 
@@ -400,6 +409,11 @@ function onPointerCancel() {
 	}
 
 	this.domElement.style.cursor = _hovered ? 'pointer' : 'auto';
+
+	// Re-enable orbit controls when dragging ends
+	if (orbitControls) {
+		orbitControls.enabled = true;
+	}
 
 	this.state = STATE.NONE;
 
@@ -439,7 +453,8 @@ scene.add(cylinder);
 
 // Initialize DragControls
 const objects = [cylinder];
-const dragControls = new DragControls(objects, camera, renderer.domElement);
+const dragControls = new DragControls(objects, camera, orbitControls, renderer.domElement);
+dragControls.addEventListener( 'drag', () => renderer.render( scene, camera ) );
 
 </script>
 
