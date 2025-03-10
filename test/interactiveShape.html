@@ -131,7 +131,6 @@ window.addEventListener("mouseup", onMouseUp, false);
 window.addEventListener("mousemove", onMouseMove, false);
 
 var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2();
 var intersects;
 var dragging = false;
 var dragObject;
@@ -139,13 +138,16 @@ var planeNormal = new THREE.Vector3(0, 0, 1);
 var shift = new THREE.Vector3();
 
 function onMouseDown(event){
+  if (dragging) return;
+  const mouse = updateMouse(event);
   raycaster.setFromCamera(mouse, camera);
   intersects = raycaster.intersectObjects(controlPoints);
 	if (intersects.length > 0){
   	orbitControls.enableRotate = false;
-    dragObject = intersects[0].object;
-    plane.setFromNormalAndCoplanarPoint(planeNormal, intersects[0].point);
-    shift.subVectors(dragObject.position, intersects[0].point);
+    const intersection = intersects[0];
+    dragObject = intersection.object;
+    plane.setFromNormalAndCoplanarPoint(planeNormal, intersection.point);
+    shift.copy(intersection.point).sub(dragObject.position);
     dragging = true;
   }
 }
@@ -156,14 +158,21 @@ function onMouseUp(event){
   dragging = false;
 }
 
+function updateMouse(event){
+  const mouse = new THREE.Vector2();
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ( event.clientX - rect.left ) / rect.width * 2 - 1;
+  mouse.y = - ( event.clientY - rect.top ) / rect.height * 2 + 1;
+  return mouse;
+}
+
 function onMouseMove(event){
-  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
   if (intersects == null || intersects.length == 0 || !dragging) return;
+  const mouse = updateMouse(event);
   const pointOfIntersection = new THREE.Vector3();
   raycaster.setFromCamera(mouse, camera);
   raycaster.ray.intersectPlane(plane, pointOfIntersection);
-  dragObject.position.copy(pointOfIntersection).add(shift);
+  dragObject.position.copy(pointOfIntersection).sub(shift);
   curveLine.geometry.dispose();
   curveLine.geometry = createCurveGeometry();
   extrudeMesh();
