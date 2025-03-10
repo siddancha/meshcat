@@ -56,8 +56,20 @@ class DragControls extends THREE.Controls {
 		this.transformGroup = false;
 		this.rotateSpeed = 1;
 
-		// Store the custom drag plane normal if provided
-		this.dragPlaneNormal = dragPlaneNormal ? new THREE.Vector3().copy(dragPlaneNormal).normalize() : null;
+		// Convert dragPlaneNormal from MeshCat's Z-up to Three.js's Y-up convention
+		if (dragPlaneNormal) {
+			// Create a copy of the vector
+			const meshcatNormal = new THREE.Vector3().copy(dragPlaneNormal).normalize();
+			
+			// Convert from Z-up to Y-up (swap Y and Z components)
+			this.dragPlaneNormal = new THREE.Vector3(
+				meshcatNormal.x,
+				meshcatNormal.z,  // Z in MeshCat becomes Y in Three.js
+				-meshcatNormal.y  // Y in MeshCat becomes -Z in Three.js
+			);
+		} else {
+			this.dragPlaneNormal = null;
+		}
 
 		this.raycaster = new THREE.Raycaster();
 
