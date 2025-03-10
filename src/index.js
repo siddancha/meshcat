@@ -15,6 +15,7 @@ import { XRButton } from 'three/examples/jsm/webxr/XRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
 
 import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
+import { DragControls } from './DragControls.js';
 
 // For exporting THREE's examples that are not included in the THREE namespace.
 export const THREE_EXAMPLES = {
@@ -1960,4 +1961,4 @@ style.sheet.insertRule(`
         padding: 0 0 0 0px;
     }`);
 
-export { Viewer, THREE, msgpack };
+export { Viewer, THREE, msgpack, DragControls };
