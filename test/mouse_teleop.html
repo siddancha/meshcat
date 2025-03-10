@@ -45,7 +45,7 @@ const STATE = {
 
 class DragControls extends THREE.Controls {
 
-	constructor( objects, camera, orbitControls = null, domElement = null ) {
+	constructor( objects, camera, orbitControls = null, dragPlaneNormal = null, domElement = null ) {
 
 		super( camera, domElement );
 
@@ -55,6 +55,9 @@ class DragControls extends THREE.Controls {
 		this.recursive = true;
 		this.transformGroup = false;
 		this.rotateSpeed = 1;
+
+		// Store the custom drag plane normal if provided
+		this.dragPlaneNormal = dragPlaneNormal ? new THREE.Vector3().copy(dragPlaneNormal).normalize() : null;
 
 		this.raycaster = new THREE.Raycaster();
 
@@ -291,7 +294,18 @@ function onPointerMove( event ) {
 
 				const object = _intersections[ 0 ].object;
 
-				_plane.setFromNormalAndCoplanarPoint( camera.getWorldDirection( _plane.normal ), _worldPosition.setFromMatrixPosition( object.matrixWorld ) );
+				// Use custom drag plane normal if available, otherwise use camera direction
+				if (this.dragPlaneNormal) {
+					_plane.setFromNormalAndCoplanarPoint(
+						this.dragPlaneNormal,
+						_worldPosition.setFromMatrixPosition(object.matrixWorld)
+					);
+				} else {
+					_plane.setFromNormalAndCoplanarPoint(
+						camera.getWorldDirection(_plane.normal),
+						_worldPosition.setFromMatrixPosition(object.matrixWorld)
+					);
+				}
 
 				if ( _hovered !== object && _hovered !== null ) {
 
@@ -363,7 +377,18 @@ function onPointerDown( event ) {
 
 		}
 
-		_plane.setFromNormalAndCoplanarPoint( camera.getWorldDirection( _plane.normal ), _worldPosition.setFromMatrixPosition( _selected.matrixWorld ) );
+		// Use custom drag plane normal if available, otherwise use camera direction
+		if (this.dragPlaneNormal) {
+			_plane.setFromNormalAndCoplanarPoint(
+				this.dragPlaneNormal,
+				_worldPosition.setFromMatrixPosition(_selected.matrixWorld)
+			);
+		} else {
+			_plane.setFromNormalAndCoplanarPoint(
+				camera.getWorldDirection(_plane.normal),
+				_worldPosition.setFromMatrixPosition(_selected.matrixWorld)
+			);
+		}
 
 		if ( raycaster.ray.intersectPlane( _plane, _intersection ) ) {
 
@@ -453,11 +478,19 @@ cylinder.position.set(0, 0, cylinder_length / 2);
 cylinder.rotation.x = Math.PI / 2;
 scene.add(cylinder);
 
+// Define a custom drag plane normal (in this case, restricting movement to the XY plane)
+const dragPlaneNormal = new THREE.Vector3(0, 0, 1);
 
-// Initialize DragControls
+// Initialize DragControls with the custom normal
 const objects = [cylinder];
-const dragControls = new DragControls(objects, camera, orbitControls, renderer.domElement);
-dragControls.addEventListener( 'drag', () => renderer.render( scene, camera ) );
+const dragControls = new DragControls(
+	objects,
+	camera,
+	orbitControls,
+	dragPlaneNormal,
+	renderer.domElement,
+);
+dragControls.addEventListener('drag', () => renderer.render(scene, camera));
 
 </script>
 
