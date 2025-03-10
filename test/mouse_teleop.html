@@ -30,9 +30,7 @@ const geometry = new THREE.CylinderGeometry(
 const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 const cylinder = new THREE.Mesh(geometry, material);
 cylinder.position.set(0, 0, cylinder_length / 2);
-// Rotate the cylinder to be upright along the z-axis
-cylinder.rotation.x = Math.PI / 2;
-scene.add(cylinder);
+cylinder.rotation.x = Math.PI / 2;  // to be upright along MeshCat's +Z axis
 
 // Define a custom drag plane normal (in this case, restricting movement to the XY plane)
 const dragPlaneNormal = new THREE.Vector3(0, 0, 1);
@@ -74,6 +72,8 @@ dragControls.addEventListener('hoveroff', (event) => {
 // 	event.object.material.emissive.setHex(0x555555);
 // 	renderer.render(scene, camera);
 // });
+
+scene.add(cylinder);
 
 </script>
 
