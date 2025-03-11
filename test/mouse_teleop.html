@@ -35,6 +35,9 @@ cylinder.rotation.x = Math.PI / 2;  // to be upright along MeshCat's +Z axis
 // Define a custom drag plane normal (in this case, restricting movement to the XY plane)
 const dragPlaneNormal = new THREE.Vector3(0, 0, 1);
 
+// Rotate dragPlaneNormal from z-up to y-up convention
+dragPlaneNormal.applyAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
+
 // Initialize DragControls.
 const dragControls = new MeshCat.DragControls(
 	cylinder,
