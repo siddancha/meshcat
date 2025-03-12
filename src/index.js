@@ -1526,6 +1526,17 @@ class Viewer {
         this.set_dirty();
     }
 
+    eval_code(code) {
+        try {
+            const THREE = MeshCat.THREE;
+            const THREE_EXAMPLES = MeshCat.THREE_EXAMPLES;
+            eval(code);
+        } catch (error) {
+            console.error("Error evaluating raw code:", error);
+        }
+        this.set_dirty();
+    }
+
     delete_path(path) {
         if (path.length == 0) {
             console.error("Deleting the entire scene is not implemented")
@@ -1646,6 +1657,8 @@ class Viewer {
         } else if (cmd.type == "set_object_from_code") {
             let path = split_path(cmd.path);
             this.set_object_from_code(path, cmd.code);
+        } else if (cmd.type == "eval_code") {
+            this.eval_code(cmd.code);
         } else if (cmd.type == "set_property") {
             let path = split_path(cmd.path);
             this.set_property(path, cmd.property, cmd.value);
